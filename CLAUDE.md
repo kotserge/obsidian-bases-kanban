@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-An Obsidian community plugin that provides kanban board views. Cards are markdown files; boards are collections of files filtered by a `board-key` frontmatter property; lists (columns) are defined by a `list-key` frontmatter property. See `docs/overview.md` for the full design spec.
+An Obsidian community plugin that provides a kanban board view for [Bases](https://obsidian.md/help/bases). It maps Bases primitives to kanban concepts: filter → board, group → lists, sort → card order, properties → card display. No custom property configuration — everything is driven by the user's Bases setup. See `docs/overview.md` for the full design spec.
 
 ## Commands
 
@@ -31,19 +31,19 @@ No test framework is configured. Manual testing: copy `main.js`, `manifest.json`
 
 The plugin class `ObsidianKanban` extends `Plugin` in `src/main.ts`. Keep this file minimal — lifecycle only (`onload`/`onunload`, command registration). Delegate feature logic to separate modules.
 
-**Planned view hierarchy:**
+**View hierarchy:**
 ```
-BoardView (ItemView)
-├── toolbar (filter by project, add column)
+BoardView (extends BasesView)
+├── toolbar (provided by Bases)
 └── board-container
     ├── Column → Card[]
     └── ...
 ```
 
 **Data model:**
-- Markdown frontmatter is source of truth (`board-key`, `list-key`, `tags-key`)
-- Plugin data stores per-board column ordering: `{ columnOrder: Record<string, string[]> }`
-- Board settings map property names: `{ boardProperty: string, listProperty: string }`
+- Markdown frontmatter is source of truth — property names are not hardcoded, they come from Bases config
+- Bases filter → board, Bases group-by → lists, Bases sort → card order, Bases properties → card display
+- Cards missing the group-by property → "Uncategorized" list (first position); cards not matching filter → excluded
 
 ## Key Conventions
 
