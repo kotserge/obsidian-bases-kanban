@@ -18,6 +18,19 @@ export default tseslint.config(
 			},
 		},
 	},
+	{
+		files: ["**/*.svelte.ts"],
+		languageOptions: {
+			globals: {
+				$state: "readonly",
+				$derived: "readonly",
+				$effect: "readonly",
+				$props: "readonly",
+				$bindable: "readonly",
+				$inspect: "readonly",
+			},
+		},
+	},
 	...obsidianmd.configs.recommended,
 	globalIgnores([
 		"node_modules",
