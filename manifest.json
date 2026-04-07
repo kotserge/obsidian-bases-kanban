@@ -2,7 +2,7 @@
 	"id": "obsidian-kanban",
 	"name": "Obsidian Kanban",
 	"version": "1.0.0",
-	"minAppVersion": "0.15.0",
+	"minAppVersion": "1.10.0",
 	"description": "Obsidan Kanban BaseView",
 	"author": "kotserge",
 	"authorUrl": "https://kotchourko.dev",
