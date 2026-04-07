@@ -1,8 +1,17 @@
-/*
+.kanban-board {
+	display: flex;
+	flex-direction: row;
+	gap: var(--size-4-2);
+	height: 100%;
+	overflow-x: auto;
+	padding: var(--size-4-2);
+}
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
-
-If your plugin does not need CSS, delete this file.
-
-*/
+.kanban-board-empty {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	color: var(--text-muted);
+	font-size: var(--font-ui-medium);
+}
