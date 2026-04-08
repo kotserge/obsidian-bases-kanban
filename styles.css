@@ -57,6 +57,7 @@
 }
 
 .kanban-card {
+	cursor: pointer;
 	background-color: var(--background-primary);
 	border-radius: var(--radius-s);
 	padding: var(--size-4-2) var(--size-4-3);

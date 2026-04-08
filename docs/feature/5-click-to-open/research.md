@@ -50,17 +50,16 @@ Standard Obsidian UX: plain click opens in current leaf, Ctrl/Cmd+click opens in
 ### 6. Accessibility
 The card is currently a plain `<div>`, which is not keyboard-navigable or announced as interactive by screen readers. Since the card's primary action is navigation, the appropriate semantic element is `<a>` (anchor) or a `<button>`. 
 
-**`<button>` vs `<a>`:**
-- `<a>` is semantically correct for navigation actions ("go to this file"). It gets keyboard focus, Enter activation, and "link" announcement for free. However, there's no real `href` to point to (Obsidian vault paths aren't URLs), so we'd use `href="#"` or `role="link"` on a non-anchor — both awkward.
-- `<button>` is semantically correct for "perform an action" and gives us focus, Enter/Space activation, and "button" announcement with zero extra work. The action happens to be navigation, but from the DOM's perspective it's a JS-driven action.
+**`<button>` vs `<a>` vs `<div role="button">`:**
+- `<a>` is semantically correct for navigation but there's no real `href` (Obsidian vault paths aren't URLs), making it awkward.
+- `<button>` provides built-in keyboard/screen-reader support but its default styles (border, background, font, text-align, sizing) conflict with the card's layout — property values and nested content render incorrectly inside a `<button>`.
+- `<div role="button">` with `tabindex="0"` and a `keydown` handler requires slightly more code but preserves the existing card layout while providing full accessibility.
 
-**Recommendation:** Use `<button>` for the card wrapper. This provides:
-- Keyboard focusability (no manual `tabindex` needed)
-- Enter and Space activation (no manual `keydown` handler needed)
-- Screen reader announcement as an interactive element
-- Clean, minimal implementation with correct semantics
-
-The existing `.kanban-card` styles will need a CSS reset for button defaults (border, background, text-align, font inheritance).
+**Recommendation:** Use `<div role="button" tabindex="0">` with a `keydown` handler for Enter/Space. This provides:
+- Keyboard focusability via `tabindex="0"`
+- Enter and Space activation via explicit `keydown` handler
+- Screen reader announcement as an interactive element via `role="button"`
+- No layout side-effects — the card renders identically to before
 
 ## Files That Need Changes
 
@@ -68,8 +67,8 @@ The existing `.kanban-card` styles will need a CSS reset for button defaults (bo
 |---|---|
 | `src/board-state.svelte.ts` | Add `onCardClick` callback to `CardContext` |
 | `src/board-view.ts` | Create the callback using `this.app.workspace.openLinkText()` |
-| `src/components/Card.svelte` | Change `<div>` to `<button>`, add click handler |
-| `styles.css` | Add `cursor: pointer` and button reset styles to `.kanban-card` |
+| `src/components/Card.svelte` | Add `role="button"`, `tabindex="0"`, click + keydown handlers |
+| `styles.css` | Add `cursor: pointer` to `.kanban-card` |
 
 ## Risks / Considerations
 

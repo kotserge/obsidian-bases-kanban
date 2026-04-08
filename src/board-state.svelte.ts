@@ -1,9 +1,10 @@
-import type { BasesEntry, BasesPropertyId, RenderContext } from "obsidian";
+import type { BasesEntry, BasesPropertyId, RenderContext, TFile } from "obsidian";
 
 export interface CardContext {
 	properties: BasesPropertyId[];
 	displayNames: Map<BasesPropertyId, string>;
 	renderContext: RenderContext;
+	openFile: (file: TFile, newTab: boolean) => void;
 }
 
 export interface ColumnData {

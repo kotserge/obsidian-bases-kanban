@@ -1,4 +1,4 @@
-import { type QueryController, type BasesPropertyId, BasesView } from "obsidian";
+import { type QueryController, type BasesPropertyId, type TFile, BasesView } from "obsidian";
 import { mount, unmount } from "svelte";
 import Board from "./components/Board.svelte";
 import {
@@ -50,10 +50,19 @@ export class BoardView extends BasesView {
 			displayNames.set(prop, this.config.getDisplayName(prop));
 		}
 
+		const openFile = (file: TFile, newTab: boolean): void => {
+			void this.app.workspace.openLinkText(
+				file.path,
+				"",
+				newTab ? "tab" : false,
+			);
+		};
+
 		const cardContext: CardContext = {
 			properties: visibleProperties,
 			displayNames,
 			renderContext: this.app.renderContext,
+			openFile,
 		};
 
 		const columns: ColumnData[] = groups

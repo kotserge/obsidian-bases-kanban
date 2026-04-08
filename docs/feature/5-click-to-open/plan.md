@@ -60,11 +60,11 @@ const cardContext: CardContext = {
 - `false` for the third argument means "open in the current leaf" (Obsidian default).
 - The arrow function captures `this.app` via closure — no need to store `app` separately.
 
-## Step 3: Change Card to `<button>` with click handler
+## Step 3: Add click and keyboard handlers to Card
 
 **File:** `src/components/Card.svelte`
 
-Replace the outer `<div>` with a `<button>` and add a click handler that reads modifier keys.
+Add `role="button"`, `tabindex="0"`, a click handler, and a keydown handler for Enter/Space. The element stays as a `<div>` — using `<button>` causes layout issues with nested card content (property values render incorrectly due to button default styles).
 
 ```svelte
 <script lang="ts">
@@ -77,6 +77,13 @@ Replace the outer `<div>` with a `<button>` and add a click handler that reads m
 		cardContext.openFile(entry.file, event.ctrlKey || event.metaKey);
 	}
 
+	function handleKeydown(event: KeyboardEvent) {
+		if (event.key === "Enter" || event.key === " ") {
+			event.preventDefault();
+			cardContext.openFile(entry.file, event.ctrlKey || event.metaKey);
+		}
+	}
+
 	function renderValue(node: HTMLElement, propertyId: string) {
 		const value = entry.getValue(propertyId as any);
 		if (value) {
@@ -85,7 +92,7 @@ Replace the outer `<div>` with a `<button>` and add a click handler that reads m
 	}
 </script>
 
-<button class="kanban-card" onclick={handleClick}>
+<div class="kanban-card" role="button" tabindex="0" onclick={handleClick} onkeydown={handleKeydown}>
 	<div class="kanban-card-title">{entry.file.basename}</div>
 	{#if cardContext.properties.length > 0}
 		<div class="kanban-card-properties">
@@ -103,47 +110,34 @@ Replace the outer `<div>` with a `<button>` and add a click handler that reads m
 			{/each}
 		</div>
 	{/if}
-</button>
+</div>
 ```
 
-**What `<button>` gives us for free:**
-- Keyboard focusable — no `tabindex` needed
-- Enter and Space trigger `onclick` — no `keydown` handler needed
-- Screen readers announce it as an interactive element
+**Accessibility via `role="button"` + `tabindex="0"`:**
+- `tabindex="0"` makes the div keyboard focusable
+- `role="button"` tells screen readers it's an interactive element
+- Explicit `keydown` handler for Enter/Space (buttons get this for free, divs do not)
+- `event.preventDefault()` on Space prevents page scroll
 
 **Modifier key logic:**
 - `event.metaKey` is Cmd on macOS, `event.ctrlKey` is Ctrl on Windows/Linux
 - Checking both covers all platforms
 - Matches standard Obsidian link behavior (Ctrl/Cmd+click → new tab)
 
-## Step 4: Button reset and cursor styles
+## Step 4: Cursor style
 
 **File:** `styles.css`
 
-The `<button>` element brings browser defaults (border, background, font, text-align) that conflict with the card's visual design. Add resets to `.kanban-card`:
+Add `cursor: pointer` to indicate clickability. No other style changes needed — the element remains a `<div>`.
 
 ```css
 .kanban-card {
-	/* Button reset */
-	border: none;
-	font: inherit;
-	text-align: start;
-	width: 100%;
 	cursor: pointer;
-
-	/* Existing styles */
 	background-color: var(--background-primary);
 	border-radius: var(--radius-s);
 	padding: var(--size-4-2) var(--size-4-3);
 }
 ```
-
-**Why these specific resets:**
-- `border: none` — buttons have a default border
-- `font: inherit` — buttons don't inherit font by default in most browsers
-- `text-align: start` — buttons default to `center`
-- `width: 100%` — buttons are inline-sized by default; cards should fill the column
-- `cursor: pointer` — visual affordance for clickability
 
 ## Execution Order
 

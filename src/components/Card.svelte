@@ -4,6 +4,17 @@
 
 	let { entry, cardContext }: { entry: BasesEntry; cardContext: CardContext } = $props();
 
+	function handleClick(event: MouseEvent) {
+		cardContext.openFile(entry.file, event.ctrlKey || event.metaKey);
+	}
+
+	function handleKeydown(event: KeyboardEvent) {
+		if (event.key === "Enter" || event.key === " ") {
+			event.preventDefault();
+			cardContext.openFile(entry.file, event.ctrlKey || event.metaKey);
+		}
+	}
+
 	function renderValue(node: HTMLElement, propertyId: string) {
 		const value = entry.getValue(propertyId as any);
 		if (value) {
@@ -12,7 +23,7 @@
 	}
 </script>
 
-<div class="kanban-card">
+<div class="kanban-card" role="button" tabindex="0" onclick={handleClick} onkeydown={handleKeydown}>
 	<div class="kanban-card-title">{entry.file.basename}</div>
 	{#if cardContext.properties.length > 0}
 		<div class="kanban-card-properties">
