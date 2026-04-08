@@ -56,11 +56,17 @@ export class BoardView extends BasesView {
 			renderContext: this.app.renderContext,
 		};
 
-		const columns: ColumnData[] = groups.map((group) => ({
-			key: group.hasKey() ? (group.key?.toString() ?? "") : "Uncategorized",
-			hasKey: group.hasKey(),
-			entries: group.entries,
-		}));
+		const columns: ColumnData[] = groups
+			.map((group) => ({
+				key: group.hasKey() ? (group.key?.toString() ?? "") : "Uncategorized",
+				hasKey: group.hasKey(),
+				entries: group.entries,
+			}))
+			.filter((col) => col.hasKey || col.entries.length > 0)
+			.sort((a, b) => {
+				if (a.hasKey === b.hasKey) return 0;
+				return a.hasKey ? 1 : -1;
+			});
 
 		setBoardState({ columns, hasGrouping: true, cardContext });
 	}
