@@ -16,7 +16,7 @@
 		</div>
 	{:else}
 		{#each state.columns as column (column.key)}
-			<Column {column} />
+			<Column {column} cardContext={state.cardContext!} />
 		{/each}
 	{/if}
 </div>

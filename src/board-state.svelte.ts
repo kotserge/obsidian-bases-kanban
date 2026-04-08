@@ -1,15 +1,28 @@
+import type { BasesEntry, BasesPropertyId, RenderContext } from "obsidian";
+
+export interface CardContext {
+	properties: BasesPropertyId[];
+	displayNames: Map<BasesPropertyId, string>;
+	renderContext: RenderContext;
+}
+
 export interface ColumnData {
 	key: string;
 	hasKey: boolean;
-	entryCount: number;
+	entries: BasesEntry[];
 }
 
 export interface BoardState {
 	columns: ColumnData[];
 	hasGrouping: boolean;
+	cardContext: CardContext | null;
 }
 
-let boardState = $state<BoardState>({ columns: [], hasGrouping: false });
+let boardState = $state<BoardState>({
+	columns: [],
+	hasGrouping: false,
+	cardContext: null,
+});
 
 export function getBoardState(): BoardState {
 	return boardState;

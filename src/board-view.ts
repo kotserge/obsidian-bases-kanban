@@ -1,7 +1,11 @@
-import { type QueryController, BasesView } from "obsidian";
+import { type QueryController, type BasesPropertyId, BasesView } from "obsidian";
 import { mount, unmount } from "svelte";
 import Board from "./components/Board.svelte";
-import { setBoardState, type ColumnData } from "./board-state.svelte";
+import {
+	setBoardState,
+	type CardContext,
+	type ColumnData,
+} from "./board-state.svelte";
 
 // eslint-disable-next-line obsidianmd/hardcoded-config-path -- reverse-domain ID, not a config path
 const VIEW_TYPE = "dev.kotchourko.obsidian.kanban";
@@ -36,17 +40,29 @@ export class BoardView extends BasesView {
 			groups.length === 1 && groups[0] !== undefined && !groups[0].hasKey();
 
 		if (noGrouping) {
-			setBoardState({ columns: [], hasGrouping: false });
+			setBoardState({ columns: [], hasGrouping: false, cardContext: null });
 			return;
 		}
+
+		const visibleProperties = this.data.properties;
+		const displayNames = new Map<BasesPropertyId, string>();
+		for (const prop of visibleProperties) {
+			displayNames.set(prop, this.config.getDisplayName(prop));
+		}
+
+		const cardContext: CardContext = {
+			properties: visibleProperties,
+			displayNames,
+			renderContext: this.app.renderContext,
+		};
 
 		const columns: ColumnData[] = groups.map((group) => ({
 			key: group.hasKey() ? (group.key?.toString() ?? "") : "Uncategorized",
 			hasKey: group.hasKey(),
-			entryCount: group.entries.length,
+			entries: group.entries,
 		}));
 
-		setBoardState({ columns, hasGrouping: true });
+		setBoardState({ columns, hasGrouping: true, cardContext });
 	}
 }
 

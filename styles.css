@@ -55,3 +55,41 @@
 	overflow-y: auto;
 	flex: 1;
 }
+
+.kanban-card {
+	background-color: var(--background-primary);
+	border-radius: var(--radius-s);
+	padding: var(--size-4-2) var(--size-4-3);
+}
+
+.kanban-card-title {
+	font-size: var(--font-ui-small);
+	font-weight: var(--font-semibold);
+	color: var(--text-normal);
+	word-break: break-word;
+}
+
+.kanban-card-properties {
+	display: flex;
+	flex-direction: column;
+	gap: var(--size-4-1);
+	margin-top: var(--size-4-1);
+	font-size: var(--font-ui-smaller);
+}
+
+.kanban-card-property {
+	display: flex;
+	align-items: baseline;
+	gap: var(--size-4-2);
+}
+
+.kanban-card-property-label {
+	color: var(--text-muted);
+	flex-shrink: 0;
+}
+
+.kanban-card-property-value {
+	color: var(--text-normal);
+	min-width: 0;
+	overflow: hidden;
+}
