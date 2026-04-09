@@ -5,6 +5,7 @@ export interface CardContext {
 	displayNames: Map<BasesPropertyId, string>;
 	renderContext: RenderContext;
 	openFile: (file: TFile, newTab: boolean) => void;
+	moveCard: (file: TFile, targetColumnKey: string, targetHasKey: boolean) => void;
 }
 
 export interface ColumnData {

@@ -63,6 +63,14 @@
 	padding: var(--size-4-2) var(--size-4-3);
 }
 
+.kanban-card.is-dragging {
+	opacity: 0.5;
+}
+
+.kanban-column.is-drop-target {
+	background-color: var(--background-modifier-hover);
+}
+
 .kanban-card-title {
 	font-size: var(--font-ui-small);
 	font-weight: var(--font-semibold);

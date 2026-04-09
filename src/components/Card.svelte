@@ -1,8 +1,11 @@
 <script lang="ts">
 	import type { BasesEntry } from "obsidian";
 	import type { CardContext } from "../board-state.svelte";
+	import { setDragState } from "../drag-state.svelte";
 
-	let { entry, cardContext }: { entry: BasesEntry; cardContext: CardContext } = $props();
+	let { entry, cardContext, columnKey }: { entry: BasesEntry; cardContext: CardContext; columnKey: string } = $props();
+
+	let isDragging = $state(false);
 
 	function handleClick(event: MouseEvent) {
 		cardContext.openFile(entry.file, event.ctrlKey || event.metaKey);
@@ -15,6 +18,19 @@
 		}
 	}
 
+	function handleDragStart(event: DragEvent) {
+		if (!event.dataTransfer) return;
+		event.dataTransfer.effectAllowed = "move";
+		event.dataTransfer.setData("text/plain", entry.file.path);
+		isDragging = true;
+		setDragState({ file: entry.file, sourceColumnKey: columnKey });
+	}
+
+	function handleDragEnd() {
+		isDragging = false;
+		setDragState(null);
+	}
+
 	function renderValue(node: HTMLElement, propertyId: string) {
 		const value = entry.getValue(propertyId as any);
 		if (value) {
@@ -23,7 +39,7 @@
 	}
 </script>
 
-<div class="kanban-card" role="button" tabindex="0" onclick={handleClick} onkeydown={handleKeydown}>
+<div class="kanban-card" class:is-dragging={isDragging} role="button" tabindex="0" draggable="true" onclick={handleClick} onkeydown={handleKeydown} ondragstart={handleDragStart} ondragend={handleDragEnd}>
 	<div class="kanban-card-title">{entry.file.basename}</div>
 	{#if cardContext.properties.length > 0}
 		<div class="kanban-card-properties">

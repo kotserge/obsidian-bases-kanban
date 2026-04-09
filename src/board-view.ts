@@ -1,4 +1,4 @@
-import { type QueryController, type BasesPropertyId, type TFile, BasesView } from "obsidian";
+import { type QueryController, type BasesPropertyId, type BasesViewConfig, type TFile, BasesView, parsePropertyId } from "obsidian";
 import { mount, unmount } from "svelte";
 import Board from "./components/Board.svelte";
 import {
@@ -9,6 +9,13 @@ import {
 
 // eslint-disable-next-line obsidianmd/hardcoded-config-path -- reverse-domain ID, not a config path
 const VIEW_TYPE = "dev.kotchourko.obsidian.kanban";
+
+// BasesViewConfig exposes groupBy at runtime but the public .d.ts types it as `{}`.
+// Isolated here so there's one place to update when the API adds a proper accessor.
+function getGroupByPropertyId(config: BasesViewConfig): BasesPropertyId | null {
+	const groupBy = (config as unknown as { groupBy?: { property?: BasesPropertyId } }).groupBy;
+	return groupBy?.property ?? null;
+}
 
 export class BoardView extends BasesView {
 	type = VIEW_TYPE;
@@ -58,11 +65,26 @@ export class BoardView extends BasesView {
 			);
 		};
 
+		const moveCard = (file: TFile, targetColumnKey: string, targetHasKey: boolean): void => {
+			const groupByPropId = getGroupByPropertyId(this.config);
+			if (!groupByPropId) return;
+			const { type, name } = parsePropertyId(groupByPropId);
+			if (type !== "note") return;
+			void this.app.fileManager.processFrontMatter(file, (fm: Record<string, unknown>) => {
+				if (targetHasKey) {
+					fm[name] = targetColumnKey;
+				} else {
+					delete fm[name];
+				}
+			});
+		};
+
 		const cardContext: CardContext = {
 			properties: visibleProperties,
 			displayNames,
 			renderContext: this.app.renderContext,
 			openFile,
+			moveCard,
 		};
 
 		const columns: ColumnData[] = groups
