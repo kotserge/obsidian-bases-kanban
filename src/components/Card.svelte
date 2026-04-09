@@ -47,9 +47,6 @@
 				{@const value = entry.getValue(propertyId)}
 				{#if value && value.isTruthy()}
 					<div class="kanban-card-property">
-						<span class="kanban-card-property-label">
-							{cardContext.displayNames.get(propertyId) ?? ""}
-						</span>
 						<span class="kanban-card-property-value" use:renderValue={propertyId}>
 						</span>
 					</div>
