@@ -8,6 +8,10 @@
 	let isDragging = $state(false);
 
 	function handleClick(event: MouseEvent) {
+		const target = event.target as HTMLElement;
+		if (target.closest(".kanban-card-property-value")?.querySelector("a, button, input, select, textarea")) {
+			return;
+		}
 		cardContext.openFile(entry.file, event.ctrlKey || event.metaKey);
 	}
 
