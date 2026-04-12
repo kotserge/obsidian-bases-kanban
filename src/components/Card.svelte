@@ -36,10 +36,22 @@
 	}
 
 	function renderValue(node: HTMLElement, propertyId: string) {
-		const value = entry.getValue(propertyId as any);
-		if (value) {
-			value.renderTo(node, cardContext.renderContext);
+		function render(id: string) {
+			node.empty();
+			const value = entry.getValue(id as any);
+			if (value) {
+				value.renderTo(node, cardContext.renderContext);
+			}
 		}
+		render(propertyId);
+		return {
+			update(newPropertyId: string) {
+				render(newPropertyId);
+			},
+			destroy() {
+				node.empty();
+			},
+		};
 	}
 </script>
 
@@ -47,7 +59,7 @@
 	<div class="kanban-card-title">{entry.file.basename}</div>
 	{#if cardContext.properties.length > 0}
 		<div class="kanban-card-properties">
-			{#each cardContext.properties as propertyId}
+			{#each cardContext.properties as propertyId (propertyId)}
 				{@const value = entry.getValue(propertyId)}
 				{#if value && value.isTruthy()}
 					<div class="kanban-card-property">
