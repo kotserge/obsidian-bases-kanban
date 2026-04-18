@@ -40,7 +40,7 @@
 		isDropTarget = false;
 		const state = getDragState();
 		if (!state || state.sourceColumnKey === column.key) return;
-		cardContext.moveCard(state.file, column.key, column.hasKey);
+		void cardContext.moveCard(state.file, column.key, column.hasKey);
 	}
 </script>
 
