@@ -7,8 +7,7 @@ import {
 	type ColumnData,
 } from "./board-state.svelte";
 
-// eslint-disable-next-line obsidianmd/hardcoded-config-path -- reverse-domain ID, not a config path
-const VIEW_TYPE = "dev.kotchourko.obsidian.kanban";
+const VIEW_TYPE = "dev.kotchourko.obsidian-bases-kanban";
 
 // BasesViewConfig exposes groupBy at runtime but the public .d.ts types it as `{}`.
 // Isolated here so there's one place to update when the API adds a proper accessor.
