@@ -3,7 +3,7 @@
 	"name": "Obsidian Kanban",
 	"version": "1.0.0",
 	"minAppVersion": "1.10.0",
-	"description": "Obsidan Kanban BaseView",
+	"description": "Kanban board view for Obsidian Bases",
 	"author": "kotserge",
 	"authorUrl": "https://kotchourko.dev",
 	"isDesktopOnly": false
