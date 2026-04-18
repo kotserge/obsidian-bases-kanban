@@ -81,5 +81,5 @@ With Bases configured to filter on `project = "my-project"`, group by `status`, 
 
 ## Requirements
 
-- Obsidian **1.8+** (Bases API)
+- Obsidian **1.10+** (Bases API)
 - No additional dependencies
