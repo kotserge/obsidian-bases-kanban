@@ -17,7 +17,7 @@ npm run svelte-check     # Type-check Svelte components
 npm run version          # Bump manifest.json and versions.json
 ```
 
-No test framework is configured. Manual testing: copy `main.js`, `manifest.json`, `styles.css` to `<Vault>/.obsidian/plugins/obsidian-kanban/`, reload Obsidian, enable in Settings → Community plugins.
+No test framework is configured. Manual testing: copy `main.js`, `manifest.json`, `styles.css` to `<Vault>/.obsidian/plugins/bases-kanban/`, reload Obsidian, enable in Settings → Community plugins.
 
 ## Build System
 

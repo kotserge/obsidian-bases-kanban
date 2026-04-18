@@ -1,5 +1,5 @@
 {
-	"name": "obsidian-kanban",
+	"name": "bases-kanban",
 	"version": "1.0.0",
 	"description": "Kanban board view for Obsidian Bases",
 	"main": "main.js",
