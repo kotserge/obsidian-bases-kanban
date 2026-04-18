@@ -65,22 +65,22 @@ export class BoardView extends BasesView {
 			);
 		};
 
-		const moveCard = (file: TFile, targetColumnKey: string, targetHasKey: boolean): void => {
+		const moveCard = async (file: TFile, targetColumnKey: string, targetHasKey: boolean): Promise<void> => {
 			const groupByPropId = getGroupByPropertyId(this.config);
 			if (!groupByPropId) return;
 			const { type, name } = parsePropertyId(groupByPropId);
 			if (type !== "note") return;
-			this.app.fileManager
-				.processFrontMatter(file, (fm: Record<string, unknown>) => {
+			try {
+				await this.app.fileManager.processFrontMatter(file, (fm: Record<string, unknown>) => {
 					if (targetHasKey) {
 						fm[name] = targetColumnKey;
 					} else {
 						delete fm[name];
 					}
-				})
-				.catch(() => {
-					new Notice(`Kanban: failed to move "${file.basename}"`);
 				});
+			} catch {
+				new Notice(`Kanban: failed to move "${file.basename}"`);
+			}
 		};
 
 		const cardContext: CardContext = {
