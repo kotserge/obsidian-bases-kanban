@@ -17,6 +17,4 @@ export default class ObsidianKanban extends Plugin {
 			);
 		}
 	}
-
-	onunload() {}
 }
