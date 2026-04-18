@@ -1,4 +1,4 @@
-# Obsidian Kanban
+# Obsidian Bases Kanban
 
 A kanban board view for [Bases](https://obsidian.md/help/bases). No extra configuration — the board is driven entirely by your existing Bases setup.
 
