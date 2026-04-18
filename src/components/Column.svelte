@@ -26,7 +26,9 @@
 	}
 
 	function handleDragLeave() {
-		dragOverCounter--;
+		const state = getDragState();
+		if (!state || state.sourceColumnKey === column.key) return;
+		if (dragOverCounter > 0) dragOverCounter--;
 		if (dragOverCounter === 0) {
 			isDropTarget = false;
 		}
