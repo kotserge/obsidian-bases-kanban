@@ -1,8 +1,8 @@
-import { Plugin } from "obsidian";
+import { Notice, Plugin } from "obsidian";
 import { BoardView, VIEW_TYPE } from "./board-view";
 
 export default class ObsidianKanban extends Plugin {
-	async onload() {
+	onload() {
 		const registered = this.registerBasesView(VIEW_TYPE, {
 			name: "Kanban",
 			icon: "square-kanban",
@@ -12,7 +12,9 @@ export default class ObsidianKanban extends Plugin {
 		});
 
 		if (!registered) {
-			console.warn("obsidian-kanban: failed to register Bases view");
+			new Notice(
+				"Kanban: failed to register bases view — bases may not be available",
+			);
 		}
 	}
 
