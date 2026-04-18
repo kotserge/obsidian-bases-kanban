@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { BasesEntry } from "obsidian";
+	import type { BasesEntry, BasesPropertyId } from "obsidian";
 	import type { CardContext } from "../board-state.svelte";
 	import { setDragState } from "../drag-state.svelte";
 
@@ -35,17 +35,17 @@
 		setDragState(null);
 	}
 
-	function renderValue(node: HTMLElement, propertyId: string) {
-		function render(id: string) {
+	function renderValue(node: HTMLElement, propertyId: BasesPropertyId) {
+		function render(id: BasesPropertyId) {
 			node.empty();
-			const value = entry.getValue(id as any);
+			const value = entry.getValue(id);
 			if (value) {
 				value.renderTo(node, cardContext.renderContext);
 			}
 		}
 		render(propertyId);
 		return {
-			update(newPropertyId: string) {
+			update(newPropertyId: BasesPropertyId) {
 				render(newPropertyId);
 			},
 			destroy() {
