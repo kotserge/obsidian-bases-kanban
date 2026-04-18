@@ -1,4 +1,4 @@
-import { type QueryController, type BasesPropertyId, type BasesViewConfig, type TFile, BasesView, parsePropertyId } from "obsidian";
+import { type QueryController, type BasesPropertyId, type BasesViewConfig, type TFile, BasesView, Notice, parsePropertyId } from "obsidian";
 import { mount, unmount } from "svelte";
 import Board from "./components/Board.svelte";
 import {
@@ -70,13 +70,17 @@ export class BoardView extends BasesView {
 			if (!groupByPropId) return;
 			const { type, name } = parsePropertyId(groupByPropId);
 			if (type !== "note") return;
-			void this.app.fileManager.processFrontMatter(file, (fm: Record<string, unknown>) => {
-				if (targetHasKey) {
-					fm[name] = targetColumnKey;
-				} else {
-					delete fm[name];
-				}
-			});
+			this.app.fileManager
+				.processFrontMatter(file, (fm: Record<string, unknown>) => {
+					if (targetHasKey) {
+						fm[name] = targetColumnKey;
+					} else {
+						delete fm[name];
+					}
+				})
+				.catch(() => {
+					new Notice(`Kanban: failed to move "${file.basename}"`);
+				});
 		};
 
 		const cardContext: CardContext = {
