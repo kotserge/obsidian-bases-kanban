@@ -2,7 +2,7 @@
 
 A kanban board view for [Bases](https://obsidian.md/help/bases). The board is driven entirely by Bases primitives.
 
-![Example Bases Kanban View](./docs/assets/example-1.png)
+![Example Bases Kanban View](./assets/example-1.png)
 
 ## How Bases maps to kanban
 
@@ -41,7 +41,7 @@ tags:
 
 With Bases configured to filter on `where project is infrastructure`, group by `status, Z -> A`, sort by `created time New to old`, and properties active `summary` and `tags` — you get a board with columns like **Backlog**, **In Progress**, and **Done**.
 
-![Example Bases Kanban View](./docs/assets/example-2.png)
+![Example Bases Kanban View](./assets/example-2.png)
 
 
 ## Requirements
