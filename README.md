@@ -1,5 +1,9 @@
 # Obsidian Bases Kanban
 
+> [!IMPORTANT]  
+> This has become obsolete since Obsidian ships a native (and very similar in scope) [Kanban View](https://obsidian.md/help/bases/views/kanban) 
+
+
 A kanban board view for [Bases](https://obsidian.md/help/bases). The board is driven entirely by Bases primitives.
 
 ![Example Bases Kanban View](./assets/example-1.png)
